@@ -138,21 +138,6 @@ resource "aws_dynamodb_table_item" "image1" {
 ITEM
 }
 
-resource "aws_dynamodb_table_item" "image2" {
-  table_name = aws_dynamodb_table.images.name
-  hash_key   = aws_dynamodb_table.images.hash_key
-  range_key   = aws_dynamodb_table.images.range_key
-
-  item = <<ITEM
-{
-  "ticketid": {"S": "ticket1"},
-  "id": {"S": "image2"},
-	"url": {"S": "example.com/image2.jpg"},
-	"content_type": {"S": "image/jpg"}
-}
-ITEM
-}
-
 resource "aws_dynamodb_table_item" "file1" {
   table_name = aws_dynamodb_table.files.name
   hash_key   = aws_dynamodb_table.files.hash_key
