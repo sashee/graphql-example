@@ -1,0 +1,60 @@
+enum SEVERITY {
+	CRITICAL
+	NORMAL
+}
+
+type Ticket {
+	id: ID!
+	title: String!
+	description: String!
+	owner: User
+	severity: SEVERITY!
+	attachments: [Attachment!]!
+}
+
+type User {
+	id: ID!
+	name: String!
+}
+
+interface Attachment {
+	id: ID!
+	url: String!
+}
+
+type Image implements Attachment {
+	id: ID!
+	url: String!
+	content_type: String!
+}
+
+type File implements Attachment {
+	id: ID!
+	url: String!
+	size: Int!
+}
+
+union SearchResult = User | Ticket
+
+type Query {
+	getTickets: [Ticket!]!
+	search(query: String!): SearchResult
+}
+
+input TicketInput {
+	title: String!
+	description: String!
+	severity: SEVERITY!
+}
+
+type Mutation {
+	addTicket(details: TicketInput!, owner: ID): Ticket!
+
+	deleteTicket(id: ID!): ID
+	@aws_cognito_user_pools(cognito_groups: ["admin"])
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}
